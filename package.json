@@ -2,7 +2,7 @@
   "name": "deadsweep",
   "displayName": "DeadSweep",
   "description": "Detect and remove dead code across your entire project. Supports TypeScript, JavaScript, Python, and CSS/SCSS.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "sajjad-ai",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -99,6 +99,18 @@
         "title": "Copy Location",
         "category": "DeadSweep",
         "icon": "$(clippy)"
+      },
+      {
+        "command": "deadsweep.clearResults",
+        "title": "Clear Results",
+        "category": "DeadSweep",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "deadsweep.rescan",
+        "title": "Rescan Project",
+        "category": "DeadSweep",
+        "icon": "$(refresh)"
       }
     ],
     "viewsContainers": {
@@ -151,19 +163,29 @@
       ],
       "view/title": [
         {
-          "command": "deadsweep.scan",
+          "command": "deadsweep.rescan",
           "when": "view == deadsweep.resultsView",
           "group": "navigation@1"
         },
         {
-          "command": "deadsweep.runWizard",
+          "command": "deadsweep.clearResults",
           "when": "view == deadsweep.resultsView",
           "group": "navigation@2"
         },
         {
-          "command": "deadsweep.openDashboard",
+          "command": "deadsweep.scan",
           "when": "view == deadsweep.resultsView",
           "group": "navigation@3"
+        },
+        {
+          "command": "deadsweep.runWizard",
+          "when": "view == deadsweep.resultsView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "deadsweep.openDashboard",
+          "when": "view == deadsweep.resultsView",
+          "group": "navigation@5"
         }
       ]
     },

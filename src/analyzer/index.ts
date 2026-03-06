@@ -202,6 +202,12 @@ export function clearIgnoredItems(): void {
     }
 }
 
+export function clearResults(): void {
+    lastScanResult = { items: [], scannedFiles: 0, scanDuration: 0, timestamp: Date.now() };
+    onScanCompleteEmitter.fire(lastScanResult);
+    lastScanResult = undefined;
+}
+
 export function dispose(): void {
     tsAnalyzer.dispose();
     onScanCompleteEmitter.dispose();

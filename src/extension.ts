@@ -8,6 +8,7 @@ import {
     removeItem,
     ignoreItem as markIgnored,
     clearIgnoredItems,
+    clearResults,
     DeadCodeItem,
     dispose as disposeAnalyzer,
 } from './analyzer/index';
@@ -192,6 +193,16 @@ function registerCommands(context: vscode.ExtensionContext): void {
 
         vscode.commands.registerCommand('deadsweep.clearIgnored', async () => {
             await clearAllIgnored(context);
+        }),
+
+        vscode.commands.registerCommand('deadsweep.clearResults', () => {
+            clearResults();
+            vscode.window.showInformationMessage('🧹 DeadSweep results cleared.');
+        }),
+
+        vscode.commands.registerCommand('deadsweep.rescan', async () => {
+            clearResults();
+            await vscode.commands.executeCommand('deadsweep.scan');
         }),
 
         vscode.commands.registerCommand('deadsweep.deleteItem', async (item?: DeadCodeItem) => {

@@ -6,6 +6,8 @@ node_modules/
 .gitignore
 tsconfig.json
 *.map
+*.pdf
 .deadsweeprc.json
+DEADSWEEP_UNDERSTANDING.md
 **/*.ts
 !out/**

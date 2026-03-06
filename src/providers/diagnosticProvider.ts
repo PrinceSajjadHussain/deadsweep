@@ -50,7 +50,7 @@ export class DiagnosticProvider {
                 diagnostic.source = 'DeadSweep';
                 diagnostic.code = {
                     value: `dead-${item.type}`,
-                    target: vscode.Uri.parse('https://github.com/deadsweep/deadsweep#rules'),
+                    target: vscode.Uri.parse('https://github.com/PrinceSajjadHussain/deadsweep#rules'),
                 };
                 diagnostic.tags = [vscode.DiagnosticTag.Unnecessary];
 

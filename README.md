@@ -1,9 +1,10 @@
 # 🧹 DeadSweep
 
-> Detect and remove dead code across your entire project.
+> Detect and remove dead code across your entire project — TypeScript, JavaScript, Python, and CSS.
 
-[![Visual Studio Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=deadsweep.deadsweep)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](https://github.com/deadsweep/deadsweep)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/sajjad-ai.deadsweep?label=VS%20Code%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=sajjad-ai.deadsweep)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/sajjad-ai.deadsweep)](https://marketplace.visualstudio.com/items?itemName=sajjad-ai.deadsweep)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![DeadSweep](https://img.shields.io/badge/dead--code-0%25-brightgreen)
 
 ---
@@ -11,80 +12,85 @@
 ## ✨ Features
 
 ### 🔍 Dead Code Detection
-- **TypeScript / JavaScript**: Detects unused variables, functions, classes, interfaces, types, enums, imports, and exports
-- **Python**: Finds unused functions, classes, variables, and imports
-- **CSS / SCSS**: Identifies unused CSS classes and IDs
-- Cross-file analysis across your entire workspace
+- **TypeScript / JavaScript** — Detects unused variables, functions, classes, interfaces, types, enums, imports, and exports using full AST analysis via [ts-morph](https://github.com/dsherret/ts-morph)
+- **Python** — Finds unused functions, classes, variables, and imports using regex-based cross-file analysis
+- **CSS / SCSS** — Identifies unused CSS classes and ID selectors by cross-referencing all source files
+- Cross-file reference analysis across your entire workspace
 - Confidence scoring system (0–100%) for safe removal
-
-![Scan Demo](https://raw.githubusercontent.com/deadsweep/deadsweep/main/media/demo-scan.gif)
 
 ### 🌳 Sidebar Tree View
 - Custom Activity Bar panel with broom icon
-- Results grouped by: **File → Type → Item**
+- Results grouped by **File → Type → Item**
 - Badge count showing total dead code items
 - Right-click context menu: Delete, Ignore, Jump to Definition, Copy Location
 
-![Tree View](https://raw.githubusercontent.com/deadsweep/deadsweep/main/media/demo-tree.gif)
-
 ### ✏️ Inline Editor Decorations
 - Red/orange gutter icon on dead code lines
-- Hover tooltip with detailed information
+- Hover tooltip with detailed information and quick actions
 - CodeLens actions: 🗑 Remove | 👁 Ignore | Confidence %
 
 ### ⚠️ Problems Panel Integration
-- All dead code appears as VS Code Diagnostics (Warning severity)
-- Uses `DiagnosticTag.Unnecessary` for native strikethrough styling
-- Quick Fix actions directly in the Problems panel
+- Dead code appears as VS Code Diagnostics (Warning severity)
+- `DiagnosticTag.Unnecessary` for native strikethrough styling
+- Quick Fix code actions directly in the Problems panel
 
 ### 🧙‍♂️ Bulk Cleanup Wizard
-- Multi-step webview UI
-  - **Step 1:** Summary of all dead code found
-  - **Step 2:** Select items to delete (pre-checked by confidence)
-  - **Step 3:** Preview diff before applying
-  - **Step 4:** Apply deletions with full undo support
-
-![Wizard Demo](https://raw.githubusercontent.com/deadsweep/deadsweep/main/media/demo-wizard.gif)
+- 4-step webview wizard:
+  1. **Summary** — overview of all dead code found
+  2. **Select** — pick items to delete (filter by type, select by confidence)
+  3. **Preview** — review diff of what will be removed
+  4. **Apply** — delete with full undo support via `WorkspaceEdit`
 
 ### 📊 Dashboard
-- Clean Score percentage (0–100%)
-- Breakdown charts by language and type (Chart.js)
+- Clean Score percentage (0–100%) with animated ring
+- Breakdown charts by language and type (powered by Chart.js)
 - Top 10 files with most dead code
-- Historical trend over time
+- Historical trend over time (stored in global state)
 
 ### 📄 Reports & Badges
-- Export self-contained HTML report
-- Generate shareable Markdown badge
+- Export self-contained HTML report with dark theme
+- Generate shareable Markdown/SVG badge for your README
 - Copy badge to clipboard with one click
 
 ### ⚡ Auto File Watcher
-- Automatic re-scan on file save
-- Debounced scanning (500ms delay)
-- Status bar with live dead code count
+- Automatic re-scan on file save (debounced at 500ms)
+- Status bar item with live dead code count
+- Click status bar to open Dashboard
 
 ### 🎯 Confidence Scoring
-- **High (≥90%):** Never referenced anywhere, safe to delete
-- **Medium (60–89%):** Likely unused but with some uncertainty
-- **Low (<60%):** Dynamic access patterns, string references, or eval usage detected
+| Level | Range | Meaning |
+|-------|-------|---------|
+| 🟢 High | ≥ 90% | Never referenced anywhere — safe to delete |
+| 🟡 Medium | 60–89% | Likely unused, some uncertainty |
+| 🔴 Low | < 60% | Dynamic access patterns, string references, or eval detected |
 
 ### 🚫 Ignore / Whitelist System
-- Right-click → "Ignore this item" adds `// deadsweep-ignore` comment
-- Right-click → "Ignore this file" adds to `.deadsweeprc.json`
-- Support for glob patterns in config
+- Right-click → **Ignore this item** → inserts `// deadsweep-ignore` comment
+- Right-click → **Ignore this file** → adds path to `.deadsweeprc.json`
+- Clear All Ignored removes all `deadsweep-ignore` comments across the workspace
 
 ---
 
 ## 📦 Installation
 
 ### From VS Code Marketplace
-1. Open VS Code
-2. Press `Ctrl+Shift+X` (Extensions)
-3. Search for "DeadSweep"
+1. Open VS Code / Cursor
+2. Press `Ctrl+Shift+X` (Extensions sidebar)
+3. Search **"DeadSweep"**
 4. Click **Install**
 
-### From VSIX
+### From VSIX (local)
 ```bash
 code --install-extension deadsweep-1.0.0.vsix
+```
+
+### From Source
+```bash
+git clone https://github.com/PrinceSajjadHussain/deadsweep.git
+cd deadsweep
+npm install
+npm run bundle
+# Press F5 in VS Code to launch Extension Development Host
 ```
 
 ---
@@ -95,7 +101,7 @@ code --install-extension deadsweep-1.0.0.vsix
 
 | Command | Keybinding | Description |
 |---------|------------|-------------|
-| `DeadSweep: Scan Entire Project` | `Ctrl+Shift+D` | Scan the whole workspace |
+| `DeadSweep: Scan Entire Project` | `Ctrl+Shift+D` | Scan the whole workspace for dead code |
 | `DeadSweep: Scan Current File` | — | Scan only the active file |
 | `DeadSweep: Open Dashboard` | — | Open the analytics dashboard |
 | `DeadSweep: Run Cleanup Wizard` | `Ctrl+Shift+X` | Launch the bulk cleanup wizard |
@@ -105,18 +111,16 @@ code --install-extension deadsweep-1.0.0.vsix
 ### Quick Start
 1. Open a project in VS Code
 2. Press `Ctrl+Shift+D` to scan your project
-3. View results in the DeadSweep sidebar panel
-4. Click items to jump to their location
-5. Right-click to delete or ignore
-6. Run the Cleanup Wizard for bulk operations
+3. View results in the **DeadSweep** sidebar panel (broom icon in Activity Bar)
+4. Click any item to jump to its location
+5. Right-click → **Delete** or **Ignore**
+6. Use the **Cleanup Wizard** (`Ctrl+Shift+X`) for bulk operations
 
 ---
 
 ## ⚙️ Configuration
 
-### `.deadsweeprc.json`
-
-Create a `.deadsweeprc.json` file in your project root:
+### `.deadsweeprc.json` (project root)
 
 ```json
 {
@@ -131,29 +135,32 @@ Create a `.deadsweeprc.json` file in your project root:
 }
 ```
 
-### VS Code Settings
+### VS Code Settings (`settings.json`)
 
-All settings are also available under `deadsweep.*` in VS Code Settings:
+All settings are under the `deadsweep.*` namespace:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `deadsweep.languages` | `["typescript", "javascript", "python", "css"]` | Languages to analyze |
-| `deadsweep.ignore` | `["**/node_modules/**", ...]` | Glob patterns to ignore |
-| `deadsweep.confidenceThreshold` | `70` | Minimum confidence to report |
-| `deadsweep.autoScanOnSave` | `true` | Auto re-scan on save |
-| `deadsweep.showInlineDecorations` | `true` | Show inline decorations |
-| `deadsweep.showCodeLens` | `true` | Show CodeLens actions |
+| `deadsweep.ignore` | `["**/node_modules/**", "**/dist/**", ...]` | Glob patterns to exclude |
+| `deadsweep.confidenceThreshold` | `70` | Minimum confidence to report (0–100) |
+| `deadsweep.ciFailThreshold` | `10` | Max dead items before CI fails |
+| `deadsweep.autoScanOnSave` | `true` | Re-scan file on save |
+| `deadsweep.showInlineDecorations` | `true` | Show gutter icons and line highlights |
+| `deadsweep.showCodeLens` | `true` | Show CodeLens above dead code |
+
+> `.deadsweeprc.json` settings override VS Code settings when both exist.
 
 ---
 
 ## 🏗️ Supported Languages
 
-| Language | Detects |
-|----------|---------|
-| TypeScript | Variables, functions, classes, interfaces, types, enums, imports, exports |
-| JavaScript | Variables, functions, classes, imports, exports |
-| Python | Functions, classes, variables, imports |
-| CSS / SCSS | Unused class selectors, ID selectors |
+| Language | Detects | Analysis Method |
+|----------|---------|-----------------|
+| TypeScript | Variables, functions, classes, interfaces, types, enums, imports, exports | AST via ts-morph |
+| JavaScript | Variables, functions, classes, imports, exports | AST via ts-morph |
+| Python | Functions, classes, variables, imports | Regex cross-file |
+| CSS / SCSS | Class selectors, ID selectors | Cross-reference source files |
 
 ---
 
@@ -161,48 +168,101 @@ All settings are also available under `deadsweep.*` in VS Code Settings:
 
 ```bash
 # Clone the repository
-git clone https://github.com/deadsweep/deadsweep.git
+git clone https://github.com/PrinceSajjadHussain/deadsweep.git
 cd deadsweep
 
 # Install dependencies
 npm install
 
-# Compile
+# Compile (type-check only)
 npm run compile
 
-# Bundle for production
+# Bundle for development (with sourcemaps)
+npm run bundle:dev
+
+# Bundle for production (minified)
 npm run bundle
 
-# Package as VSIX
+# Package as .vsix
 npm run package
+
+# Publish to Marketplace
+npm run publish
 ```
 
 ### Running in Development
-1. Open the project in VS Code
+1. Open the `deadsweep` folder in VS Code
 2. Press `F5` to launch the Extension Development Host
-3. The extension will be active in the new window
+3. The extension will be active in the new window — use `Ctrl+Shift+D` to scan
+
+### Project Structure
+```
+deadsweep/
+├── src/
+│   ├── extension.ts          # Entry point — activate/deactivate, register commands
+│   ├── dashboard.ts          # Dashboard webview panel (Chart.js)
+│   ├── analyzer/
+│   │   ├── types.ts          # Shared types: DeadCodeType, DeadCodeItem, etc.
+│   │   ├── index.ts          # Orchestrator: scanProject(), scanFile()
+│   │   ├── tsAnalyzer.ts     # TypeScript/JS analysis via ts-morph
+│   │   ├── pythonAnalyzer.ts # Python analysis via regex
+│   │   └── cssAnalyzer.ts    # CSS analysis via cross-reference
+│   ├── providers/
+│   │   ├── treeProvider.ts       # Sidebar TreeView
+│   │   ├── decorationProvider.ts # Gutter icons, CodeLens
+│   │   └── diagnosticProvider.ts # Problems panel, CodeActions
+│   ├── actions/
+│   │   ├── deleteAction.ts   # Single/multi delete via WorkspaceEdit
+│   │   ├── ignoreAction.ts   # Inline comment + file-level ignoring
+│   │   └── bulkAction.ts     # 4-step Cleanup Wizard webview
+│   ├── watchers/
+│   │   └── fileWatcher.ts    # Auto re-scan on save + status bar
+│   ├── reports/
+│   │   ├── htmlReport.ts     # HTML report generation
+│   │   └── badgeGenerator.ts # Markdown/SVG badge
+│   ├── config/
+│   │   └── configManager.ts  # Merge VS Code settings + .deadsweeprc.json
+│   └── utils/
+│       ├── helpers.ts        # debounce, groupBy, relativePath, escapeHtml, etc.
+│       └── logger.ts         # Output channel logger
+├── media/
+│   ├── broom.svg             # Activity Bar icon
+│   └── icon.png              # Extension marketplace icon
+├── package.json              # Extension manifest
+├── tsconfig.json             # TypeScript config
+├── .deadsweeprc.json         # Default config file
+└── .vscodeignore             # Files excluded from .vsix
+```
 
 ---
 
 ## 📋 Requirements
 
-- VS Code `^1.85.0`
-- Node.js 18+
+- **VS Code** `^1.85.0` (or compatible editors like Cursor)
+- **Node.js** 18+ (for development)
 
 ---
 
 ## 📝 License
 
-MIT © DeadSweep
+MIT © [Sajjad Hussain](https://github.com/PrinceSajjadHussain)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please open an issue or pull request on [GitHub](https://github.com/deadsweep/deadsweep).
+Contributions are welcome! Please open an issue or pull request on [GitHub](https://github.com/PrinceSajjadHussain/deadsweep).
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m "Add my feature"`
+4. Push to branch: `git push origin feature/my-feature`
+5. Open a Pull Request
 
 ---
 
 <div align="center">
-  <strong>🧹 Keep your codebase clean with DeadSweep</strong>
+  <strong>🧹 Keep your codebase clean with DeadSweep</strong><br/>
+  <a href="https://marketplace.visualstudio.com/items?itemName=sajjad-ai.deadsweep">Install from Marketplace</a> · 
+  <a href="https://github.com/PrinceSajjadHussain/deadsweep">GitHub</a>
 </div>

@@ -1,0 +1,247 @@
+{
+  "name": "deadsweep",
+  "displayName": "DeadSweep",
+  "description": "Detect and remove dead code across your entire project. Supports TypeScript, JavaScript, Python, and CSS/SCSS.",
+  "version": "1.0.0",
+  "publisher": "deadsweep",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "dead code",
+    "unused code",
+    "cleanup",
+    "refactor",
+    "lint",
+    "typescript",
+    "javascript",
+    "python",
+    "css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PrinceSajjadHussain/deadsweep"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "deadsweep.scan",
+        "title": "Scan Entire Project",
+        "category": "DeadSweep",
+        "icon": "$(search)"
+      },
+      {
+        "command": "deadsweep.scanFile",
+        "title": "Scan Current File",
+        "category": "DeadSweep",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "deadsweep.openDashboard",
+        "title": "Open Dashboard",
+        "category": "DeadSweep",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "deadsweep.runWizard",
+        "title": "Run Cleanup Wizard",
+        "category": "DeadSweep",
+        "icon": "$(wand)"
+      },
+      {
+        "command": "deadsweep.exportReport",
+        "title": "Export HTML Report",
+        "category": "DeadSweep",
+        "icon": "$(export)"
+      },
+      {
+        "command": "deadsweep.clearIgnored",
+        "title": "Clear All Ignored Items",
+        "category": "DeadSweep",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "deadsweep.deleteItem",
+        "title": "Delete Dead Code",
+        "category": "DeadSweep",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "deadsweep.ignoreItem",
+        "title": "Ignore This Item",
+        "category": "DeadSweep",
+        "icon": "$(eye-closed)"
+      },
+      {
+        "command": "deadsweep.ignoreFile",
+        "title": "Ignore This File",
+        "category": "DeadSweep",
+        "icon": "$(file-symlink-file)"
+      },
+      {
+        "command": "deadsweep.jumpToItem",
+        "title": "Jump to Definition",
+        "category": "DeadSweep",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "deadsweep.copyLocation",
+        "title": "Copy Location",
+        "category": "DeadSweep",
+        "icon": "$(clippy)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "deadsweep",
+          "title": "DeadSweep",
+          "icon": "media/broom.svg"
+        }
+      ]
+    },
+    "views": {
+      "deadsweep": [
+        {
+          "id": "deadsweep.resultsView",
+          "name": "Dead Code Results",
+          "icon": "media/broom.svg",
+          "contextualTitle": "DeadSweep"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "deadsweep.resultsView",
+        "contents": "✅ No dead code found. Your project is clean!\n\n[Scan Project](command:deadsweep.scan)\n\nRun a scan to detect unused code across your workspace."
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "deadsweep.deleteItem",
+          "when": "view == deadsweep.resultsView && viewItem == deadCodeItem",
+          "group": "1_actions@1"
+        },
+        {
+          "command": "deadsweep.ignoreItem",
+          "when": "view == deadsweep.resultsView && viewItem == deadCodeItem",
+          "group": "1_actions@2"
+        },
+        {
+          "command": "deadsweep.jumpToItem",
+          "when": "view == deadsweep.resultsView && viewItem == deadCodeItem",
+          "group": "2_navigation@1"
+        },
+        {
+          "command": "deadsweep.copyLocation",
+          "when": "view == deadsweep.resultsView && viewItem == deadCodeItem",
+          "group": "2_navigation@2"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "deadsweep.scan",
+          "when": "view == deadsweep.resultsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "deadsweep.runWizard",
+          "when": "view == deadsweep.resultsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "deadsweep.openDashboard",
+          "when": "view == deadsweep.resultsView",
+          "group": "navigation@3"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "deadsweep.scan",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      },
+      {
+        "command": "deadsweep.runWizard",
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x"
+      }
+    ],
+    "configuration": {
+      "title": "DeadSweep",
+      "properties": {
+        "deadsweep.languages": {
+          "type": "array",
+          "default": ["typescript", "javascript", "python", "css"],
+          "description": "Languages to analyze for dead code."
+        },
+        "deadsweep.ignore": {
+          "type": "array",
+          "default": ["**/node_modules/**", "**/dist/**", "**/out/**", "**/.git/**"],
+          "description": "Glob patterns to ignore during analysis."
+        },
+        "deadsweep.confidenceThreshold": {
+          "type": "number",
+          "default": 70,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Minimum confidence score (0-100) to report dead code."
+        },
+        "deadsweep.ciFailThreshold": {
+          "type": "number",
+          "default": 10,
+          "description": "Max dead code items before CI fails."
+        },
+        "deadsweep.autoScanOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically re-scan files on save."
+        },
+        "deadsweep.showInlineDecorations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline decorations on dead code lines."
+        },
+        "deadsweep.showCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show CodeLens actions above dead code."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "bundle": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "bundle:dev": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "pretest": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.19.11",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "ts-morph": "^21.0.1"
+  }
+}

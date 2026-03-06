@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeadSweep Dashboard</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--vscode-font-family);
+            color: var(--vscode-foreground);
+            background: var(--vscode-editor-background);
+            padding: 0; margin: 0;
+        }
+        .dashboard { max-width: 1100px; margin: 0 auto; padding: 24px; }
+        .dashboard-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px; padding-bottom: 16px;
+            border-bottom: 1px solid var(--vscode-panel-border);
+        }
+        .dashboard-header h1 { font-size: 28px; margin: 0; }
+        .dashboard-header .actions { display: flex; gap: 8px; }
+        .dashboard-header button {
+            padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer;
+            font-size: 13px; background: #C0392B; color: white;
+        }
+        .dashboard-header button:hover { background: #A93226; }
+        .dashboard-header button.secondary {
+            background: var(--vscode-button-secondaryBackground);
+            color: var(--vscode-button-secondaryForeground);
+        }
+
+        .score-section { text-align: center; margin: 32px 0; }
+        .score-ring {
+            width: 160px; height: 160px; position: relative;
+            display: inline-block; margin-bottom: 12px;
+        }
+        .score-ring svg { transform: rotate(-90deg); }
+        .score-ring .score-text {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 42px; font-weight: bold;
+        }
+        .score-label { font-size: 16px; color: var(--vscode-descriptionForeground); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px; margin: 24px 0;
+        }
+        .stat-card {
+            background: var(--vscode-input-background);
+            border: 1px solid var(--vscode-panel-border);
+            border-radius: 8px; padding: 16px; text-align: center;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .value { font-size: 32px; font-weight: bold; color: #C0392B; }
+        .stat-card .label { font-size: 12px; color: var(--vscode-descriptionForeground); margin-top: 4px; }
+
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+        .chart-card {
+            background: var(--vscode-input-background);
+            border: 1px solid var(--vscode-panel-border);
+            border-radius: 8px; padding: 16px;
+        }
+        .chart-card h3 { font-size: 15px; margin-bottom: 12px; color: #C0392B; }
+        .chart-container { position: relative; height: 250px; }
+
+        .top-files { margin: 24px 0; }
+        .top-files h3 { font-size: 15px; margin-bottom: 12px; color: #C0392B; }
+        .file-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 12px; border-bottom: 1px solid var(--vscode-panel-border);
+        }
+        .file-row:hover { background: var(--vscode-list-hoverBackground); }
+        .file-row .rank { font-size: 14px; font-weight: bold; color: #C0392B; width: 24px; text-align: center; }
+        .file-row .name { flex: 1; font-size: 13px; }
+        .file-row .count-badge {
+            background: #C0392B; color: white; padding: 2px 8px;
+            border-radius: 10px; font-size: 12px; font-weight: 600;
+        }
+        .file-row .bar {
+            height: 4px; background: #C0392B; border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .trend-section { margin: 24px 0; }
+        .trend-section h3 { font-size: 15px; margin-bottom: 12px; color: #C0392B; }
+
+        .empty-state {
+            text-align: center; padding: 64px 24px;
+            color: var(--vscode-descriptionForeground);
+        }
+        .empty-state .icon { font-size: 64px; margin-bottom: 16px; }
+        .empty-state h2 { font-size: 24px; margin-bottom: 8px; color: var(--vscode-foreground); }
+
+        @media (max-width: 700px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h1>🧹 DeadSweep Dashboard</h1>
+            <div class="actions">
+                <button onclick="runScan()">Scan Project</button>
+                <button class="secondary" onclick="exportReport()">Export Report</button>
+                <button class="secondary" onclick="copyBadge()">Copy Badge</button>
+            </div>
+        </div>
+
+        <div id="content"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script id="dashboardScript"></script>
+</body>
+</html>

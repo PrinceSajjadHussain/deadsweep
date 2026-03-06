@@ -1,0 +1,10 @@
+{
+  "languages": ["typescript", "javascript", "python", "css"],
+  "ignore": ["**/node_modules/**", "**/dist/**", "**/out/**", "**/.git/**", "**/*.test.ts", "**/*.spec.ts"],
+  "ignorePatterns": [".*_test$", "^test_.*"],
+  "confidenceThreshold": 70,
+  "ciFailThreshold": 10,
+  "autoScanOnSave": true,
+  "showInlineDecorations": true,
+  "showCodeLens": true
+}

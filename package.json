@@ -3,7 +3,7 @@
   "displayName": "DeadSweep",
   "description": "Detect and remove dead code across your entire project. Supports TypeScript, JavaScript, Python, and CSS/SCSS.",
   "version": "1.0.0",
-  "publisher": "PrinceSajjadHussain",
+  "publisher": "sajjad-ai",
   "license": "MIT",
   "icon": "media/icon.png",
   "engines": {
